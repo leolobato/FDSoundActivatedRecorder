@@ -125,7 +125,7 @@ open class FDSoundActivatedRecorder: NSObject, AVAudioRecorderDelegate {
         return audioRecorder
     }()
     
-    fileprivate(set) var status = FDSoundActivatedRecorderStatus.inactive
+    @objc fileprivate(set) var status = FDSoundActivatedRecorderStatus.inactive
     fileprivate var listeningIntervals = [Double]()
     fileprivate var recordingIntervals = [Double]()
     fileprivate var triggerCount = 0
@@ -138,14 +138,14 @@ open class FDSoundActivatedRecorder: NSObject, AVAudioRecorderDelegate {
     @objc dynamic open var microphoneLevel: Double = 0.0
     
     /// Receiver for status updates
-    open weak var delegate: FDSoundActivatedRecorderDelegate?
+    @objc open weak var delegate: FDSoundActivatedRecorderDelegate?
     
     deinit {
         self.abort()
     }
     
     /// Listen and start recording when triggered
-    open func startListening() {
+    @objc open func startListening() {
         status = .listening
         audioRecorder.stop()
         audioRecorder.record(forDuration: timeoutSeconds)
@@ -165,7 +165,7 @@ open class FDSoundActivatedRecorder: NSObject, AVAudioRecorderDelegate {
     }
     
     /// End the recording and send any processed & saved file to `delegate`
-    open func stopAndSaveRecording() {
+    @objc open func stopAndSaveRecording() {
         self.intervalTimer.invalidate()
         guard status == .recording else {
             return
@@ -229,7 +229,7 @@ open class FDSoundActivatedRecorder: NSObject, AVAudioRecorderDelegate {
     }
     
     /// End any recording or listening and discard any recorded file
-    open func abort() {
+    @objc open func abort() {
         self.intervalTimer.invalidate()
         self.audioRecorder.stop()
         if status != .inactive {
